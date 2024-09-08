@@ -1,11 +1,11 @@
 const questions = [
     {
-        question: "What is the capital of France?",
+        question: "What is 1+2",
         answers: [
-            { text: "Paris", correct: true },
-            { text: "London", correct: false },
-            { text: "Berlin", correct: false },
-            { text: "Madrid", correct: false }
+            { text: "3", correct: true },
+            { text: "2", correct: false },
+            { text: "1", correct: false },
+            { text: "0", correct: false }
         ]
     },
     {
