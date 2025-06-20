@@ -42,6 +42,16 @@ button:disabled {
     font-weight: bold;
     margin-top: 20px;
 }
+.btn.correct {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn.wrong {
+  background-color: #F44336;
+  color: white;
+}
+
 
 #score-display {
     font-size: 1.2em;
