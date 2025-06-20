@@ -30,12 +30,19 @@ const questions = [
 
 let currentQuestionIndex = 0;
 let score = 0;
-
+const restartButton = document.getElementById("restart-btn");
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("next-btn");
 const feedbackElement = document.getElementById("feedback");
 const scoreDisplayElement = document.getElementById("score-display");
+
+function displayScore() {
+    feedbackElement.textContent = '';
+    scoreDisplayElement.textContent = `Your score: ${score}/${questions.length}`;
+    nextButton.style.display = "none";
+    restartButton.style.display = "block"; // 👈 Show the restart button
+}
 
 function startQuiz() {
     currentQuestionIndex = 0;
@@ -86,3 +93,8 @@ function displayScore() {
 
 // Start the quiz on page load
 startQuiz();
+restartButton.addEventListener("click", () => {
+    restartButton.style.display = "none";
+    nextButton.style.display = "none";
+    startQuiz();
+});
