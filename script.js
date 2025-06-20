@@ -113,3 +113,4 @@ restartButton.addEventListener("click", () => {
     startQuiz();
 });
 nextButton.addEventListener("click", handleNextQuestion);
+window.onload = startQuiz;
