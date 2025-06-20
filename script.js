@@ -1,3 +1,5 @@
+let answerSelected = false;
+
 const questions = [
     {
         question: "What is 1+2",
@@ -38,19 +40,13 @@ const feedbackElement = document.getElementById("feedback");
 const scoreDisplayElement = document.getElementById("score-display");
 
 function displayScore() {
-    feedbackElement.textContent = '';
+    feedbackElement.textContent = '🕉 Jai Shri Krishna! You have completed the quiz 🙏';
     scoreDisplayElement.textContent = `Your score: ${score}/${questions.length}`;
     nextButton.style.display = "none";
-    restartButton.style.display = "block"; // 👈 Show the restart button
+    restartButton.style.display = "block";
 }
 
-function startQuiz() {
-    currentQuestionIndex = 0;
-    score = 0;
-    scoreDisplayElement.textContent = '';
-    feedbackElement.textContent = '';
-    showQuestion(questions[currentQuestionIndex]);
-}
+
 
 function showQuestion(question) {
     questionElement.textContent = question.question;
@@ -65,17 +61,30 @@ function showQuestion(question) {
 }
 
 function selectAnswer(answer) {
+    if (answerSelected) return;
+    answerSelected = true;
+
     if (answer.correct) {
         score++;
         feedbackElement.textContent = "Correct!";
     } else {
         feedbackElement.textContent = `Wrong! The correct answer is: ${questions[currentQuestionIndex].answers.find(a => a.correct).text}`;
     }
+
+    // Disable all buttons and show correct/wrong feedback
+    Array.from(answerButtonsElement.children).forEach(btn => {
+        btn.disabled = true;
+        const isCorrect = questions[currentQuestionIndex].answers.find(a => a.text === btn.textContent).correct;
+        btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    });
+
     nextButton.style.display = "block";
 }
 
+
 function handleNextQuestion() {
     currentQuestionIndex++;
+    answerSelected = false;
     if (currentQuestionIndex < questions.length) {
         feedbackElement.textContent = '';
         nextButton.style.display = "none";
@@ -85,16 +94,20 @@ function handleNextQuestion() {
     }
 }
 
-function displayScore() {
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    answerSelected = false;
+    scoreDisplayElement.textContent = '';
     feedbackElement.textContent = '';
-    scoreDisplayElement.textContent = `Your score: ${score}/${questions.length}`;
-    nextButton.style.display = "none";
+    restartButton.style.display = "none";
+    showQuestion(questions[currentQuestionIndex]);
 }
 
 // Start the quiz on page load
-startQuiz();
 restartButton.addEventListener("click", () => {
     restartButton.style.display = "none";
     nextButton.style.display = "none";
     startQuiz();
 });
+nextButton.addEventListener("click", handleNextQuestion);
