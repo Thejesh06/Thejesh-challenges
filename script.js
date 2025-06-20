@@ -48,7 +48,8 @@ function displayScore() {
 
 
 
-function showQuestion(question) {
+function showQuestion() {
+    const question = questions[currentQuestionIndex];
     questionElement.textContent = question.question;
     answerButtonsElement.innerHTML = '';
     question.answers.forEach(answer => {
@@ -59,6 +60,7 @@ function showQuestion(question) {
         answerButtonsElement.appendChild(button);
     });
 }
+
 
 function selectAnswer(answer) {
     if (answerSelected) return;
@@ -88,7 +90,7 @@ function handleNextQuestion() {
     if (currentQuestionIndex < questions.length) {
         feedbackElement.textContent = '';
         nextButton.style.display = "none";
-        showQuestion(questions[currentQuestionIndex]);
+        showQuestion();
     } else {
         displayScore();
     }
@@ -101,7 +103,7 @@ function startQuiz() {
     scoreDisplayElement.textContent = '';
     feedbackElement.textContent = '';
     restartButton.style.display = "none";
-    showQuestion(questions[currentQuestionIndex]);
+    showQuestion();
 }
 
 // Start the quiz on page load
