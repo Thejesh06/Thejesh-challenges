@@ -85,10 +85,9 @@ function selectAnswer(answer) {
 
 
 function handleNextQuestion() {
-    answerSelected = false;
-    currentQuestionIndex++;
-
-    if (currentQuestionIndex < questions.length) {
+    if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        answerSelected = false;
         feedbackElement.textContent = '';
         nextButton.style.display = "none";
         showQuestion();
@@ -96,6 +95,7 @@ function handleNextQuestion() {
         displayScore();
     }
 }
+
 
 function startQuiz() {
     currentQuestionIndex = 0;
