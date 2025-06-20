@@ -32,6 +32,7 @@ const questions = [
 
 let currentQuestionIndex = 0;
 let score = 0;
+
 const restartButton = document.getElementById("restart-btn");
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answer-buttons");
@@ -46,48 +47,47 @@ function displayScore() {
     restartButton.style.display = "block";
 }
 
-
-
 function showQuestion() {
     const question = questions[currentQuestionIndex];
     questionElement.textContent = question.question;
     answerButtonsElement.innerHTML = '';
+    answerSelected = false;
+
     question.answers.forEach(answer => {
         const button = document.createElement("button");
         button.textContent = answer.text;
         button.classList.add("btn");
-        button.onclick = () => selectAnswer(answer);
+
+        button.addEventListener("click", () => {
+            if (answerSelected) return;
+            answerSelected = true;
+
+            if (answer.correct) {
+                score++;
+                feedbackElement.textContent = "Correct!";
+            } else {
+                const correctAnswer = question.answers.find(a => a.correct).text;
+                feedbackElement.textContent = `Wrong! The correct answer is: ${correctAnswer}`;
+            }
+
+            // disable all buttons and color them
+            Array.from(answerButtonsElement.children).forEach(btn => {
+                btn.disabled = true;
+                const isCorrect = question.answers.find(a => a.text === btn.textContent).correct;
+                btn.classList.add(isCorrect ? 'correct' : 'wrong');
+            });
+
+            nextButton.style.display = "block";
+        });
+
         answerButtonsElement.appendChild(button);
     });
 }
 
-
-function selectAnswer(answer) {
-    if (answerSelected) return;
-    answerSelected = true;
-
-    if (answer.correct) {
-        score++;
-        feedbackElement.textContent = "Correct!";
-    } else {
-        feedbackElement.textContent = `Wrong! The correct answer is: ${questions[currentQuestionIndex].answers.find(a => a.correct).text}`;
-    }
-
-    // Disable all buttons and show correct/wrong feedback
-    Array.from(answerButtonsElement.children).forEach(btn => {
-        btn.disabled = true;
-        const isCorrect = questions[currentQuestionIndex].answers.find(a => a.text === btn.textContent).correct;
-        btn.classList.add(isCorrect ? 'correct' : 'wrong');
-    });
-
-    nextButton.style.display = "block";
-}
-
-
 function handleNextQuestion() {
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        answerSelected = false;
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
         feedbackElement.textContent = '';
         nextButton.style.display = "none";
         showQuestion();
@@ -96,7 +96,6 @@ function handleNextQuestion() {
     }
 }
 
-
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
@@ -104,16 +103,10 @@ function startQuiz() {
     scoreDisplayElement.textContent = '';
     feedbackElement.textContent = '';
     restartButton.style.display = "none";
-    nextButton.style.display = "none"; // 👈 optional
+    nextButton.style.display = "none";
     showQuestion();
 }
 
-
-// Start the quiz on page load
-restartButton.addEventListener("click", () => {
-    restartButton.style.display = "none";
-    nextButton.style.display = "none";
-    startQuiz();
-});
+restartButton.addEventListener("click", startQuiz);
 nextButton.addEventListener("click", handleNextQuestion);
 window.onload = startQuiz;
