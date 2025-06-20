@@ -85,8 +85,9 @@ function selectAnswer(answer) {
 
 
 function handleNextQuestion() {
-    currentQuestionIndex++;
     answerSelected = false;
+    currentQuestionIndex++;
+
     if (currentQuestionIndex < questions.length) {
         feedbackElement.textContent = '';
         nextButton.style.display = "none";
@@ -103,8 +104,10 @@ function startQuiz() {
     scoreDisplayElement.textContent = '';
     feedbackElement.textContent = '';
     restartButton.style.display = "none";
+    nextButton.style.display = "none"; // 👈 optional
     showQuestion();
 }
+
 
 // Start the quiz on page load
 restartButton.addEventListener("click", () => {
